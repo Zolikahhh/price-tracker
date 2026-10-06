@@ -1,0 +1,28 @@
+
+# Web Framework & API
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+pydantic-settings==2.3.4
+
+# Database & ORM
+sqlalchemy==2.0.31
+asyncpg==0.29.0
+alembic==1.13.1
+
+# Asynchronous Task Queue & Cache
+celery==5.4.0
+redis==5.0.6
+
+# Scraping & HTTP
+httpx==0.27.0
+beautifulsoup4==4.12.3
+lxml==5.2.2
+
+# Authentication & Security
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+python-multipart==0.0.9
+
+# Environment Variables
+python-dotenv==1.0.1
