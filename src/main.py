@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from src.config.settings import settings
-from src.api.v1.endpoints import health,products,users
+from src.api.v1.endpoints import health,products,users,subscriptions
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -11,7 +11,7 @@ app = FastAPI(
 app.include_router(health.router, prefix=settings.API_V1_STR, tags=["Health Check"])
 app.include_router(products.router, prefix=f"{settings.API_V1_STR}/products",tags=["Products"])
 app.include_router(users.router, prefix=f"{settings.API_V1_STR}/users", tags=["Users"])
-
+app.include_router(subscriptions.router, prefix=f"{settings.API_V1_STR}/subscriptions", tags=["Subscriptions"])
 @app.get("/")
 async def root():
     return {"message": f"Welcome to {settings.PROJECT_NAME} API!"}
