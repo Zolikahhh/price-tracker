@@ -1,33 +1,42 @@
-version: '3.8'
-
 services:
-  postgres:
-    image: postgres:16-alpine
+  db:
+    image: postgres:15
     container_name: price_tracker_db
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: price_tracker
+      POSTGRES_DB: pricetracker
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pricetracker"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: price_tracker_redis
+  web:
+    build: .
+    container_name: price_tracker_api
+    restart: always
     ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgrespassword@db:5432/pricetracker
+      - SECRET_KEY=SUPER_SECRET_KEY_CHANGE_THIS_IN_PRODUCTION
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=10080
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=
+      - SMTP_PASSWORD=
+      - EMAILS_FROM_EMAIL=noreply@pricetracker.com
+      - EMAILS_FROM_NAME=Price Tracker
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
