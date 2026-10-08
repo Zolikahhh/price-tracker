@@ -5,8 +5,9 @@ from src.config.settings import settings
 
 # Aszinkron PostgreSQL Engine létrehozása
 engine = create_async_engine(
-    settings.ASYNC_DATABASE_URL,
-    echo=True,  # Kiírja az SQL lekérdezéseket a terminálba (fejlesztéshez)
+    settings.DATABASE_URL,
+    echo=False,
+    future = True  # Kiírja az SQL lekérdezéseket a terminálba (fejlesztéshez)
 )
 
 # Munkamenet-gyár (Session factory)
@@ -14,7 +15,6 @@ AsyncSessionLocal = async_sessionmaker(
     bind=engine,
     class_=AsyncSession,
     expire_on_commit=False,
-    autoflush=False
 )
 
 # Ősosztály az ORM modellekhez
