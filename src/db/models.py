@@ -72,7 +72,8 @@ class ProductSubscription(Base):
     target_price: Mapped[Optional[float]] = mapped_column(Numeric(12, 2), nullable=True)
     notify_on_stock_change: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-
+    last_notified_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    
     user: Mapped["User"] = relationship(
         back_populates="subscriptions"
     )

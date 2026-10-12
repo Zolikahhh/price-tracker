@@ -78,3 +78,25 @@ async def get_product(
         )
 
     return product
+
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_product(
+    product_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Termék törlése az adatbázisból ID alapján.
+    """
+    result = await db.execute(select(Product).where(Product.id == product_id))
+    product = result.scalars().first()
+
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="A megadott azonosítójú termék nem található."
+        )
+
+    await db.delete(product)
+    await db.commit()
+
+    return None
