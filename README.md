@@ -28,7 +28,7 @@ Egy automatizált termékárazás-követő és értesítő rendszer, amely **Fas
 ---
 
 ## Projekt Struktúra
-
+```
 price-tracker/
 ├── .env                    # Sensitiv adatok (Gitignore-ban legyen!)
 ├── .env.example            # Minta környezeti változók a repository-hoz
